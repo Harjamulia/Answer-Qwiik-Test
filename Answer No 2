@@ -1,0 +1,72 @@
+describe('SauceDemo Website Automation Tests', () => {
+    it('should be able to sort products', () => {
+        // Navigate to the website
+        browser.url('https://www.saucedemo.com/');
+        
+        // Login with valid credentials
+        $('#user-name').setValue('standard_user');
+        $('#password').setValue('secret_sauce');
+        $('#login-button').click();
+
+        // Wait for the inventory to load
+        $('.inventory_list').waitForDisplayed();
+
+        // Click on the sorting dropdown
+        $('.product_sort_container').click();
+
+        // Select a sorting option (e.g., Price (low to high))
+        $('[data-test="product_sort_container"] option[value="lohi"]').click();
+
+        // Get the sorted product list
+        const productList = $$('.inventory_item_name');
+        
+        // Verify that the products are sorted correctly
+        let previousPrice = 0;
+        productList.forEach(product => {
+            const currentPrice = parseFloat(product.getText().match(/\d+\.\d+/)[0]);
+            expect(currentPrice).toBeGreaterThanOrEqual(previousPrice);
+            previousPrice = currentPrice;
+        });
+    });
+
+    it('should be able to complete the checkout process', () => {
+        // Navigate to the website
+        browser.url('https://www.saucedemo.com/');
+        
+        // Login with valid credentials
+        $('#user-name').setValue('standard_user');
+        $('#password').setValue('secret_sauce');
+        $('#login-button').click();
+
+        // Wait for the inventory to load
+        $('.inventory_list').waitForDisplayed();
+
+        // Add a product to the cart
+        $('.btn_primary').click();
+
+        // Go to the cart
+        $('.shopping_cart_link').click();
+
+        // Click on the checkout button
+        $('.btn_action.checkout_button').click();
+
+        // Fill in checkout information
+        $('#first-name').setValue('John');
+        $('#last-name').setValue('Doe');
+        $('#postal-code').setValue('12345');
+        
+        // Click on the continue button
+        $('.btn_primary.cart_button').click();
+
+        // Verify that the checkout is complete
+        expect($('.summary_subtotal_label').getText()).toContain('Item total:');
+        expect($('.summary_tax_label').getText()).toContain('Tax:');
+        expect($('.summary_total_label').getText()).toContain('Total:');
+
+        // Click on the finish button
+        $('.btn_action.cart_button').click();
+
+        // Verify that the thank you message is displayed
+        expect($('.complete-header').getText()).toContain('THANK YOU FOR YOUR ORDER');
+    });
+});
