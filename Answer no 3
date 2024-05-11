@@ -1,0 +1,34 @@
+1. Create a new user:
+Request Type: POST
+Endpoint: https://gorest.co.in/public-api/users
+Request Body:
+json
+Copy code
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "gender": "male",
+    "status": "active"
+}
+Expected Response: HTTP status code 201 (Created), and the response body containing the details of the created user, including the user ID.
+
+2. Get user details:
+Request Type: GET
+Endpoint: https://gorest.co.in/public-api/users/{user_id}
+Request Parameters: Replace {user_id} with the ID of the user you want to retrieve.
+Expected Response: HTTP status code 200 (OK), and the response body containing the details of the user with the specified user ID.
+
+3. Update user details:
+Request Type: PUT
+Endpoint: https://gorest.co.in/public-api/users/{user_id}
+Request Parameters: Replace {user_id} with the ID of the user you want to update.
+Request Body: Provide the updated details for the user.
+json
+Copy code
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "gender": "male",
+    "status": "inactive"
+}
+Expected Response: HTTP status code 200 (OK), and the response body containing the updated details of the user.
